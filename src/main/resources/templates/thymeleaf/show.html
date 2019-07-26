@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>测试展示页面</title>
+</head>
+<body>
+
+<p th:value="${user.udesc}"/>
+
+<div>
+    用户姓名：<p th:text="${user.uname}"></p>
+    <br/>
+    用户姓名：<input th:id="${user.uname}" th:name="${user.uname}" th:value="${user.uname}"/>
+    <br/>
+    用户年龄：<input th:value="${user.uage}"/>
+    <br/>
+    用户生日：<input th:value="${user.birthday}"/>
+    <br/>
+    用户生日：<input th:value="${#dates.format(user.birthday, 'yyyy-MM-dd')}"/>
+    <br/>
+</div>
+
+<br/>
+
+<div th:object="${user}">
+    用户姓名：<input th:value="*{uname}"/>
+    <br/>
+    用户年龄：<input th:value="*{uage}"/>
+    <br/>
+</div>
+
+<br/>
+text与utext:<br/>
+<span th:text="${user.udesc}">abc</span>
+<br/>
+<span th:utext="${user.udesc}"></span>
+
+<br/>
+<br/>
+
+url:<br/>
+<a href="" th:href="@{http://www.zsrun.club}">网站地址</a>
+<br/>
+
+<form th:action="@{/postform}" th:object="${user}" method="post" th:post="post">
+    <input type="text" th:field="*{uname}"/>
+    <input type="text" th:field="*{uage}"/>
+    <input type="submit"/>
+</form>
+
+<br/>
+
+<div th:if="${user.uage} == 18">你个十八岁的小崽子</div>
+<div th:if="${user.uage} ge 18">你个大于等于18岁的老年人</div>
+<div th:if="${user.uage} le 18">你个小于等于18岁的毛孩子</div>
+
+
+<br/>
+<select>
+    <option>选择一个人</option>
+    <option th:selected="${user.uname eq '西施'}">西施</option>
+    <option th:selected="${user.uname eq '杨玉环'}">杨玉环</option>
+    <option th:selected="${user.uname eq '小乔'}">小乔</option>
+    <option th:selected="${user.uname eq '大乔'}">大乔</option>
+</select>
+
+<br/>
+
+<table>
+    <tr>
+        <th>姓名</th>
+        <th>年龄</th>
+        <th>描述</th>
+        <th>生日</th>
+        <th>江湖人称</th>
+    </tr>
+    <tr th:each="person:${userList}">
+        <td th:text="${person.uname}">1</td>
+        <td th:text="${person.uage}">2</td>
+        <td th:text="${person.uage gt 18} ? 你老了 : 你很年轻">18岁</td>
+        <td th:text="${#dates.format(user.birthday,'yyyy-MM-dd hh:mm:ss')}"></td>
+        <td th:text="${person.udesc}"></td>
+    </tr>
+</table>
+
+
+<br/>
+<div th:switch="${user.uname}">
+    <p th:case="'lee'">lee</p>
+    <p th:case="#{roles.manager}">普通管理员</p>
+    <p th:case="#{roles.superadmin}">超级管理员</p>
+    <p th:case="*">其他用户</p>
+</div>
+<br/>
+
+</body>
+</html>
